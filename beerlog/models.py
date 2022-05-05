@@ -13,7 +13,7 @@ class Beer(SQLModel, table=True):
     style: str
     image: int
     rate: int = 0
-    date: datetime  = Field(default_factory=datetime.now)
+    date: datetime = Field(default_factory=datetime.now)
 
     @validator("flavor", "cost", "image")
     def validate_rating(cls, v, field):
@@ -23,7 +23,7 @@ class Beer(SQLModel, table=True):
 
     @validator("rate", always=True)
     def calculate_rate(cls, v, values):
-        rate = mean([values["flavor"], values['cost'], values['image']])
+        rate = mean([values["flavor"], values["cost"], values["image"]])
         return int(rate)
 
 
