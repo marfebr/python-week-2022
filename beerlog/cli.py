@@ -1,9 +1,12 @@
 from typer import Typer, Option
 from typing import Optional
 from beerlog.core import add_beer_database, get_beers
-
+from rich.table import Table
+from rich.console import Console
 
 main = Typer(help="Beer Manager Application")
+
+console = Console()
 
 
 @main.command("add")
@@ -26,4 +29,14 @@ def list_beer(style: Optional[str] = None):
     """Lista cervejas de um stilo"""
 
     lista = get_beers()
-    print(lista)
+    table = Table(title="Beerlog :beer_mug")
+    headers = ['id', 'name', 'style', 'rate', 'date']
+    for header in headers:
+        table.add_column(header=header, style='magenta')
+
+    for beer in lista:
+        values = [str(getattr(beer, header)) for header in headers]
+        print(values)
+        table.add_row(*values)
+        
+    console.print(table)
